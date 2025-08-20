@@ -47,7 +47,7 @@ jobs:
         run: curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
 
       - name: Configurar CLI
-        run: echo "${{ env.B4A_ACCOUNT_KEY }}" | b4a configure accountkey --stdin
+        run: b4a configure accountkey ${{ secrets.B4A_ACCOUNT_KEY }} --default
 
       - name: Deploy para Staging App
         run: b4a deploy --app "ZuZTwiLmjLLkDm4sh2gTjNpbQIT0YHoI0lhNnmi7"
