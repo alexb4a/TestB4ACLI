@@ -44,7 +44,7 @@ jobs:
         run: curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
 
       - name: Deploy para Staging App
-        run: b4a deploy ZuZTwiLmjLLkDm4sh2gTjNpbQIT0YHoI0lhNnmi7 --description "Deploy Staging"
+        run: b4a deploy Staging --description "Deploy Staging"
 
         env:
           B4A_ACCOUNT_KEY: ${{ secrets.B4A_ACCOUNT_KEY }}
@@ -60,7 +60,7 @@ jobs:
         run: curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
 
       - name: Deploy para Test App
-        run: b4a deploy ZuZTwiLmjLLkDm4sh2gTjNpbQIT0YHoI0lhNnmi7 --description "Deploy Test"
+        run: b4a deploy Test --description "Deploy Test"
 
         env:
           B4A_ACCOUNT_KEY: ${{ secrets.B4A_ACCOUNT_KEY }}
@@ -76,7 +76,7 @@ jobs:
         run: curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
 
       - name: Deploy para Main App
-        run: b4a deploy ZuZTwiLmjLLkDm4sh2gTjNpbQIT0YHoI0lhNnmi7 --description "Deploy Prod"
+        run: b4a deploy Main --description "Deploy Prod"
 
         env:
           B4A_ACCOUNT_KEY: ${{ secrets.B4A_ACCOUNT_KEY }}
