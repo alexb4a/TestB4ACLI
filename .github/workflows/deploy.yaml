@@ -43,10 +43,14 @@ jobs:
       - name: Instalar Back4App CLI
         run: curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
 
+      - name: Configurar account key via netrc
+        run: |
+          mkdir -p ~/.back4app
+          echo "${{ secrets.B4A_NETRC }}" > ~/.back4app/netrc
+          chmod 600 ~/.back4app/netrc
+
       - name: Deploy Staging
         run: b4a deploy Staging --description "Deploy Staging"
-        env:
-          B4A_ACCOUNT_KEY: ${{ secrets.B4A_ACCOUNT_KEY }}
 
   deploy_test:
     if: github.ref == 'refs/heads/test'
@@ -58,10 +62,14 @@ jobs:
       - name: Instalar Back4App CLI
         run: curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
 
+      - name: Configurar account key via netrc
+        run: |
+          mkdir -p ~/.back4app
+          echo "${{ secrets.B4A_NETRC }}" > ~/.back4app/netrc
+          chmod 600 ~/.back4app/netrc
+
       - name: Deploy Test
         run: b4a deploy Test --description "Deploy Test"
-        env:
-          B4A_ACCOUNT_KEY: ${{ secrets.B4A_ACCOUNT_KEY }}
 
   deploy_main:
     if: github.ref == 'refs/heads/main'
@@ -73,7 +81,11 @@ jobs:
       - name: Instalar Back4App CLI
         run: curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
 
+      - name: Configurar account key via netrc
+        run: |
+          mkdir -p ~/.back4app
+          echo "${{ secrets.B4A_NETRC }}" > ~/.back4app/netrc
+          chmod 600 ~/.back4app/netrc
+
       - name: Deploy Main
         run: b4a deploy Main --description "Deploy Main"
-        env:
-          B4A_ACCOUNT_KEY: ${{ secrets.B4A_ACCOUNT_KEY }}
