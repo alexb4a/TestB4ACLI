@@ -44,9 +44,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Instalar Back4App CLI
-        run: |
-          curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
-          b4a --version
+        run: curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
 
       - name: Configurar CLI
         run: echo "${{ env.B4A_ACCOUNT_KEY }}" | b4a configure accountkey --stdin
