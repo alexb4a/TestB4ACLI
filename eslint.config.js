@@ -5,10 +5,10 @@ export default [
     files: ['**/*.js', '**/*.mjs', '**/*.cjs', '**/*.ts'],
     languageOptions: {
       ecmaVersion: 2021,
-      sourceType: 'module',
+      sourceType: 'module'
     },
     plugins: {
-      import: eslintPluginImport,
+      import: eslintPluginImport
     },
     rules: {
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
@@ -21,9 +21,9 @@ export default [
         'error',
         {
           groups: [['builtin', 'external', 'internal']],
-          'newlines-between': 'always',
-        },
-      ],
-    },
-  },
+          'newlines-between': 'always'
+        }
+      ]
+    }
+  }
 ];

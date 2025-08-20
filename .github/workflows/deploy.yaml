@@ -7,9 +7,6 @@ on:
       - test
       - main
 
-env:
-  B4A_ACCOUNT_KEY: ${{ secrets.B4A_ACCOUNT_KEY }}
-
 jobs:
   checks:
     runs-on: ubuntu-latest
@@ -22,7 +19,7 @@ jobs:
           node-version: 20
 
       - name: Instalar dependências
-        run: npm ci
+        run: npm install
 
       - name: Rodar ESLint
         run: npm run lint
@@ -46,11 +43,10 @@ jobs:
       - name: Instalar Back4App CLI
         run: curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
 
-      - name: Configurar CLI
-        run: b4a configure accountkey ${{ secrets.B4A_ACCOUNT_KEY }} --default
-
       - name: Deploy para Staging App
         run: b4a deploy --app "ZuZTwiLmjLLkDm4sh2gTjNpbQIT0YHoI0lhNnmi7"
+        env:
+          B4A_ACCOUNT_KEY: ${{ secrets.B4A_ACCOUNT_KEY }}
 
   deploy_test:
     if: github.ref == 'refs/heads/test'
@@ -60,15 +56,12 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Instalar Back4App CLI
-        run: |
-          curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
-          b4a --version
-
-      - name: Configurar CLI
-        run: echo "${{ env.B4A_ACCOUNT_KEY }}" | b4a configure accountkey --stdin
+        run: curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
 
       - name: Deploy para Test App
         run: b4a deploy --app "9gMCwQsaVruMX64kAVCKXVIDj2YvMEhHZ97js7P3"
+        env:
+          B4A_ACCOUNT_KEY: ${{ secrets.B4A_ACCOUNT_KEY }}
 
   deploy_main:
     if: github.ref == 'refs/heads/main'
@@ -78,12 +71,9 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Instalar Back4App CLI
-        run: |
-          curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
-          b4a --version
-
-      - name: Configurar CLI
-        run: echo "${{ env.B4A_ACCOUNT_KEY }}" | b4a configure accountkey --stdin
+        run: curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
 
       - name: Deploy para Main App
         run: b4a deploy --app "OSTQSiMml4v3sqc728fuNvjx9zs3DgnZZzutAj6W"
+        env:
+          B4A_ACCOUNT_KEY: ${{ secrets.B4A_ACCOUNT_KEY }}
