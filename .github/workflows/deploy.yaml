@@ -1,0 +1,91 @@
+name: CI/CD Back4App Deploy
+
+on:
+  push:
+    branches:
+      - staging
+      - test
+      - main
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Rodar ESLint
+        run: npm run lint
+
+      - name: Rodar Prettier
+        run: npx prettier --check .
+
+      - name: Rodar build
+        run: npm run build
+
+      - name: Rodar testes
+        run: npm test
+
+  deploy_staging:
+    if: github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    needs: checks
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Instalar Back4App CLI
+        run: curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
+
+      - name: Configurar account key via netrc
+        run: |
+          mkdir -p ~/.back4app
+          echo "${{ secrets.B4A_NETRC }}" > ~/.back4app/netrc
+          chmod 600 ~/.back4app/netrc
+
+      - name: Deploy Staging
+        run: b4a deploy Staging --description "Deploy Staging"
+
+  deploy_test:
+    if: github.ref == 'refs/heads/test'
+    runs-on: ubuntu-latest
+    needs: [checks, deploy_staging]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Instalar Back4App CLI
+        run: curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
+
+      - name: Configurar account key via netrc
+        run: |
+          mkdir -p ~/.back4app
+          echo "${{ secrets.B4A_NETRC }}" > ~/.back4app/netrc
+          chmod 600 ~/.back4app/netrc
+
+      - name: Deploy Test
+        run: b4a deploy Test --description "Deploy Test"
+
+  deploy_main:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: [checks, deploy_test]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Instalar Back4App CLI
+        run: curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
+
+      - name: Configurar account key via netrc
+        run: |
+          mkdir -p ~/.back4app
+          echo "${{ secrets.B4A_NETRC }}" > ~/.back4app/netrc
+          chmod 600 ~/.back4app/netrc
+
+      - name: Deploy Main
+        run: b4a deploy Main --description "Deploy Main"
