@@ -1,4 +1,4 @@
-name: CI/CD Back4App Deploy Pipeline
+name: CI/CD Back4App Deploy
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
       - name: Rodar ESLint
         run: npm run lint
 
-      - name: Rodar Prettier (checagem)
+      - name: Rodar Prettier
         run: npx prettier --check .
 
       - name: Rodar build
@@ -43,9 +43,8 @@ jobs:
       - name: Instalar Back4App CLI
         run: curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
 
-      - name: Deploy para Staging App
+      - name: Deploy Staging
         run: b4a deploy Staging --description "Deploy Staging"
-
         env:
           B4A_ACCOUNT_KEY: ${{ secrets.B4A_ACCOUNT_KEY }}
 
@@ -59,9 +58,8 @@ jobs:
       - name: Instalar Back4App CLI
         run: curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
 
-      - name: Deploy para Test App
+      - name: Deploy Test
         run: b4a deploy Test --description "Deploy Test"
-
         env:
           B4A_ACCOUNT_KEY: ${{ secrets.B4A_ACCOUNT_KEY }}
 
@@ -75,8 +73,7 @@ jobs:
       - name: Instalar Back4App CLI
         run: curl -s https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
 
-      - name: Deploy para Main App
-        run: b4a deploy Main --description "Deploy Prod"
-
+      - name: Deploy Main
+        run: b4a deploy Main --description "Deploy Main"
         env:
           B4A_ACCOUNT_KEY: ${{ secrets.B4A_ACCOUNT_KEY }}
